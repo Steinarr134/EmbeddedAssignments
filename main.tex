@@ -43,6 +43,8 @@
   tabsize=3,                                     
   title=\lstname 
 }
+
+
 \lstnewenvironment{code}[2][]{%
   \lstset{%
     numbers = left,
@@ -50,7 +52,6 @@
     #1,
   }%
 }{}
-
 
 \title{Assignment 1.2}
 \author{Steinarr Hrafn Höskuldsson}
@@ -69,7 +70,11 @@
 \section*{Part 1}
 
 The following code accomplishes the task of blinking the onboard LED using only register operations.
+
+\lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
+
 \begin{lstlisting}{main.cpp}
+
 #include <avr/io.h>
 #include <util/delay.h>
 //#include <stdint.h>
