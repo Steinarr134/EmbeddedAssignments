@@ -68,92 +68,22 @@
 \pagestyle{firststyle}
 {\let\newpage\relax\maketitle}
 \section*{Part 1}
-
-The following code accomplishes the task of blinking the onboard LED using only register operations.
+I created timer\_msc.h and timer\_msc.cpp as follows:
 
 \lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
 
-\begin{lstlisting}{main.cpp}
+\lstinputlisting[caption=timer\_msec.h]{EmbeddedSystemsAssignment2_1/src/timer_msec.h}
 
-#include <avr/io.h>
-#include <util/delay.h>
-//#include <stdint.h>
+# TODO: put these in columns next to each other?
 
-int main(){
-  
-  // we are interested in pin 5 on PORT B.
-  uint8_t mask = (1 << 5);
+Running the main.cpp program given results in the LED blinking at a frequency of 0.5Hz as expected.
 
-  // first, set DDR bit as 1
-  DDRB |= mask;
-
-  while (true)
-  {
-    _delay_ms(1000); // wait 1 second
-    PORTB |= mask; // set high
-    _delay_ms(1000); // wait 1 second
-    PORTB &= ~mask; // set high
-  }
-
-  return 0;
-}
-\end{lstlisting}
-
+The maximum length of interval the timer wupports is r2
 It uses no RAM at compile time and uses only 176 bytes of Flash memory.
 \newpage
 \section*{Part 2}
 A digital out driver was constructed with these two files:
 
-\begin{lstlisting}{digital_out.h}
-#include <stdint.h>
-
-class Digital_out
-{
-public:
-    Digital_out(int pin); 
-    void init();
-    void set_hi();
-    void set_lo();
-    void toggle();
-    const bool state() {return _state;}
-
-
-private:
-    bool _state;
-    uint8_t pinMask;
-};
-
-\end{lstlisting}
-
-\begin{lstlisting}{digital_out.cpp}
-#include "digital_out.h"
-#include <avr/io.h>
-
-Digital_out::Digital_out(int pin){
-    pinMask = (1<<pin);
-}
-
-void Digital_out::init(){
-    DDRB |= pinMask;
-}
-
-void Digital_out::set_hi()
-{
-    PORTB |= pinMask;
-}
-
-void Digital_out::set_lo()
-{
-    PORTB &= ~pinMask;
-}
-
-void Digital_out::toggle()
-{
-    PORTB = PORTB ^ pinMask;
-}
-
-
-\end{lstlisting}
 
 The program given like the program from Part 1 uses no RAM at compile time and this time only 162 bytes of Flash.
 \newpage
