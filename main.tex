@@ -1,0 +1,252 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+
+\lstset{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,               
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                                     
+  title=\lstname 
+}
+\lstnewenvironment{code}[2][]{%
+  \lstset{%
+    numbers = left,
+    title   = #2,
+    #1,
+  }%
+}{}
+
+
+\title{Assignment 1.2}
+\author{Steinarr Hrafn Höskuldsson}
+
+\usepackage{fancyhdr}
+\fancypagestyle{firststyle}
+{
+   \fancyhf{}
+   \fancyhead[L]{Embedded Systems Programming}
+   
+   \renewcommand{\headrulewidth}{0pt} % removes horizontal header line
+}
+\begin{document}
+\pagestyle{firststyle}
+{\let\newpage\relax\maketitle}
+\section*{Part 1}
+
+The following code accomplishes the task of blinking the onboard LED using only register operations.
+\begin{lstlisting}{main.cpp}
+#include <avr/io.h>
+#include <util/delay.h>
+//#include <stdint.h>
+
+int main(){
+  
+  // we are interested in pin 5 on PORT B.
+  uint8_t mask = (1 << 5);
+
+  // first, set DDR bit as 1
+  DDRB |= mask;
+
+  while (true)
+  {
+    _delay_ms(1000); // wait 1 second
+    PORTB |= mask; // set high
+    _delay_ms(1000); // wait 1 second
+    PORTB &= ~mask; // set high
+  }
+
+  return 0;
+}
+\end{lstlisting}
+
+It uses no RAM at compile time and uses only 176 bytes of Flash memory.
+\newpage
+\section*{Part 2}
+A digital out driver was constructed with these two files:
+
+\begin{lstlisting}{digital_out.h}
+#include <stdint.h>
+
+class Digital_out
+{
+public:
+    Digital_out(int pin); 
+    void init();
+    void set_hi();
+    void set_lo();
+    void toggle();
+    const bool state() {return _state;}
+
+
+private:
+    bool _state;
+    uint8_t pinMask;
+};
+
+\end{lstlisting}
+
+\begin{lstlisting}{digital_out.cpp}
+#include "digital_out.h"
+#include <avr/io.h>
+
+Digital_out::Digital_out(int pin){
+    pinMask = (1<<pin);
+}
+
+void Digital_out::init(){
+    DDRB |= pinMask;
+}
+
+void Digital_out::set_hi()
+{
+    PORTB |= pinMask;
+}
+
+void Digital_out::set_lo()
+{
+    PORTB &= ~pinMask;
+}
+
+void Digital_out::toggle()
+{
+    PORTB = PORTB ^ pinMask;
+}
+
+
+\end{lstlisting}
+
+The program given like the program from Part 1 uses no RAM at compile time and this time only 162 bytes of Flash.
+\newpage
+\section*{Part 3}
+A digital in driver was constructed with these two files:
+\begin{lstlisting}{digital_in.h}
+#include <stdint.h>
+
+class Digital_in
+{
+public:
+    Digital_in(int pin);
+    void init();
+    void init(bool pull_up);
+    bool is_hi();
+    bool is_lo();
+    bool state();
+
+private:
+    uint8_t pinMask;
+};
+
+\end{lstlisting}
+
+
+\begin{lstlisting}{digital_in.cpp}
+#include "digital_in.h"
+#include <avr/io.h>
+
+Digital_in::Digital_in(int pin)
+{
+    pinMask = (1 << pin);
+}
+
+void Digital_in::init()
+{
+    // no pull up asked for
+    init(false);
+}
+
+void Digital_in::init(bool pull_up)
+{
+    DDRB &= ~pinMask; // DDR bit to 0
+    if (pull_up)
+    {
+        PORTB |= pinMask; // PORT bit to 1 for pull up
+    }
+    else
+    {
+        PORTB &= ~pinMask;
+    }
+    // set DDR bit to 0
+}
+
+bool Digital_in::is_hi()
+{
+    return (PINB & pinMask);
+}
+
+bool Digital_in::is_lo()
+{
+    return !is_hi();
+}
+
+\end{lstlisting}
+\newpage
+and this program accomplishes the task as outlined.
+\begin{lstlisting}{main.cpp}
+#include <util/delay.h>
+#include <digital_out.h>
+#include <digital_in.h>
+
+int main()
+{
+  Digital_out led(5); // PB5 Arduino Nano built-in LED on D13
+
+  led.init();
+
+  Digital_in button(1); // PB1, pin 9 on Arduino Nano
+
+  button.init(true); // use internal pull up
+
+  // led.set_hi();
+  while (true)
+  {
+    _delay_ms(150);
+    // led.toggle();
+    if (button.is_lo())
+    {
+      led.set_lo();
+    }
+    else
+    {
+      led.toggle();
+    }
+  }
+}
+
+\end{lstlisting}
+\end{document}
+
