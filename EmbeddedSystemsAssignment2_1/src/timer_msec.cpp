@@ -24,4 +24,4 @@ void Timer_msec::init(int period_ms){
     TCCR1B |= (1 << CS11);   // set prescaler to 8 and start the timer
     sei();
 
-}
+} 
