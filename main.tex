@@ -68,19 +68,12 @@
 \pagestyle{firststyle}
 {\let\newpage\relax\maketitle}
 \section*{Part 1}
-I created timer\_msc.h and timer\_msc.cpp as follows:
+I created timer\_msec.h and timer\_msec.cpp as can be seen in appendix \ref{appendix:code}. 
 
-\lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
+Running the main.cpp program given in the assignment results in the LED blinking at a frequency of 0.5Hz as expected. 
 
-\lstinputlisting[caption=timer\_msec.h]{EmbeddedSystemsAssignment2_1/src/timer_msec.h}
+The maximum length of interval the timer supports is 4194 milliseconds.
 
-# TODO: put these in columns next to each other?
-
-Running the main.cpp program given results in the LED blinking at a frequency of 0.5Hz as expected.
-
-The maximum length of interval the timer wupports is r2
-It uses no RAM at compile time and uses only 176 bytes of Flash memory.
-\newpage
 \section*{Part 2}
 A digital out driver was constructed with these two files:
 
@@ -89,99 +82,18 @@ The program given like the program from Part 1 uses no RAM at compile time and t
 \newpage
 \section*{Part 3}
 A digital in driver was constructed with these two files:
-\begin{lstlisting}{digital_in.h}
-#include <stdint.h>
 
-class Digital_in
-{
-public:
-    Digital_in(int pin);
-    void init();
-    void init(bool pull_up);
-    bool is_hi();
-    bool is_lo();
-    bool state();
-
-private:
-    uint8_t pinMask;
-};
-
-\end{lstlisting}
-
-
-\begin{lstlisting}{digital_in.cpp}
-#include "digital_in.h"
-#include <avr/io.h>
-
-Digital_in::Digital_in(int pin)
-{
-    pinMask = (1 << pin);
-}
-
-void Digital_in::init()
-{
-    // no pull up asked for
-    init(false);
-}
-
-void Digital_in::init(bool pull_up)
-{
-    DDRB &= ~pinMask; // DDR bit to 0
-    if (pull_up)
-    {
-        PORTB |= pinMask; // PORT bit to 1 for pull up
-    }
-    else
-    {
-        PORTB &= ~pinMask;
-    }
-    // set DDR bit to 0
-}
-
-bool Digital_in::is_hi()
-{
-    return (PINB & pinMask);
-}
-
-bool Digital_in::is_lo()
-{
-    return !is_hi();
-}
-
-\end{lstlisting}
 \newpage
 and this program accomplishes the task as outlined.
-\begin{lstlisting}{main.cpp}
-#include <util/delay.h>
-#include <digital_out.h>
-#include <digital_in.h>
 
-int main()
-{
-  Digital_out led(5); // PB5 Arduino Nano built-in LED on D13
+\appendix
+\section{Code}\label{appendix:code}
+\lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
 
-  led.init();
+\lstinputlisting[caption=timer\_msec.h]{EmbeddedSystemsAssignment2_1/src/timer_msec.h}
 
-  Digital_in button(1); // PB1, pin 9 on Arduino Nano
 
-  button.init(true); // use internal pull up
+% TODO: put these in columns next to each other?
 
-  // led.set_hi();
-  while (true)
-  {
-    _delay_ms(150);
-    // led.toggle();
-    if (button.is_lo())
-    {
-      led.set_lo();
-    }
-    else
-    {
-      led.toggle();
-    }
-  }
-}
-
-\end{lstlisting}
 \end{document}
 
