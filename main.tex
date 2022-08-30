@@ -53,7 +53,7 @@
   }%
 }{}
 
-\title{Assignment 1.2}
+\title{Assignment 2.1}
 \author{Steinarr Hrafn Höskuldsson}
 
 \usepackage{fancyhdr}
@@ -68,21 +68,25 @@
 \pagestyle{firststyle}
 {\let\newpage\relax\maketitle}
 \section*{Part 1}
-I created timer\_msec.h and timer\_msec.cpp as can be seen in appendix \ref{appendix:code}. 
 
+I created timer\_msec.h and timer\_msec.cpp as can be seen in appendix \ref{appendix:code}.
+\newline
+
+The init() method sets the timer up to fire every second.
 Running the main.cpp program given in the assignment results in the LED blinking at a frequency of 0.5Hz as expected. 
+\newline
 
-The maximum length of interval the timer supports is 4194 milliseconds.
+The init(int period\_ms) method sets the timer up to fire every period\_ms milliseconds. 
+The maximum length of interval the timer supports is \(\lfloor 2^{16}*1024 / 16000\rfloor = 4194\) milliseconds.
 
 \section*{Part 2}
-A digital out driver was constructed with these two files:
-
-
-The program given like the program from Part 1 uses no RAM at compile time and this time only 162 bytes of Flash.
+I modified the example to include a duty cycle option. The code can be seen in Appendix \ref{appendix:code}.
+\newline
+with the duty cycle set to 20\% I reduced  the timer period until I stopped noticing the light blinking. I found it to be around 26 or 27 milliseonds. 28 ms was visibly flickering and 25 ms looked very solid.
 \newpage
 \section*{Part 3}
-A digital in driver was constructed with these two files:
-
+I added a method to the timer class called set that changes the duty cycle.
+I the used the while loop present in the main function do vary the duty cycle. Running the program I observed the LED fading from very dim to very bright over the course of 5 seconds before abruptly turning off and repeating the fade in. 
 \newpage
 and this program accomplishes the task as outlined.
 
