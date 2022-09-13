@@ -6,6 +6,8 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
+  delay(100);
+  Serial.println("Part 2, State Machine, based on Refactoring Guru's example");
 }
 
 enum State
