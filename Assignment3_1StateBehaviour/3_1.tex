@@ -19,7 +19,7 @@
 \colorlet{mygreen}{green!60!blue}
 \colorlet{mymauve}{red!60!blue}
 
-\lstset{
+\lstdefinelanguage{cpp}{
   backgroundcolor=\color{gray!10},  
   basicstyle=\ttfamily,
   columns=fullflexible,
@@ -36,15 +36,15 @@
   numbersep=5pt,                   
   numberstyle=\tiny\color{blue}, 
   rulecolor=\color{mygray},        
-  showspaces=false,               
+  showspaces=false,
+  showstringspaces=false,
   showtabs=false,                 
   stepnumber=5,                  
   stringstyle=\color{mymauve},    
   tabsize=3,                                     
   title=\lstname 
 }
-
-
+\lstset{language=cpp}
 \lstnewenvironment{code}[2][]{%
   \lstset{%
     numbers = left,
@@ -90,43 +90,65 @@ A new project was created in PlatformIO and a finite state diagram using plantUM
 Which generated the following diagram:
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm1.png}
+    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm2.png}
     \caption{Finite State Machine Diagram of a simplified traffic light.}
-    \label{fig:fsmdiagram}
 \end{figure}
 
 \section*{Part 2}
-
+The state machine was implemented using a switch case setup. The code can be seen in appendix \ref{appendix:code}.
+\mycomment{
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm1.png}
+    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm2.png}
     \caption{Updated Finite State Machine Diagram of a simplified traffic light.}
-    \label{fig:fsmdiagram}
 \end{figure}
+}
+Running the code resulted in the following behaviour, note that lines encased in \{\} are comments added afterwards.
 
+\lstset{language=}
 \begin{lstlisting}
-Part 2, State Machine, based on Refactoring Guru's example
+Part 2, State Machine, based on Refactoring Gurus example
 RedLight->ON
+
+{sending: g}
+
 I received: 103
 I received a go command
 RedLight->OFF
 GreenLight->ON
+
+{sending s}
+
 I received: 115
 I received a stop command
 GreenLight->OFF
 YellowLight->ON
+
+{there was a delay here}
+
 YellowLight->OFF
 RedLight->ON
 \end{lstlisting}
+\lstset{language=cpp}
 
+
+\section*{Part 3}
+The State behaviour was implemented based on the example from Reference Guru. The Context and State Definitions were moved to Context.h and each class definition was moved into its own header file.
+Here is the program. All relevant header files can be seen in Appendix \ref{appendix:code}
+\lstinputlisting[caption=main.cpp in Part 3]{Assignment3_1StateBehaviour/src/main_prt3.cpp}
+The behaviour when run was exactly the same as an be seen in Part 2. 
+
+\newpage
 \appendix
 \section{Code}\label{appendix:code}
 
-\lstinputlisting[caption=timer\_msec.h]{EmbeddedSystemsAssignment2_1/src/timer_msec.h}
+\lstinputlisting[caption=main.cpp in Part 2]{Assignment3_1StateBehaviour/src/main_prt2.cpp_old}
 
-\lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
+\lstinputlisting[caption=Context.h]{Assignment3_1StateBehaviour/src/Context.h}
+\lstinputlisting[caption=Red.h]{Assignment3_1StateBehaviour/src/Red.h}
+\lstinputlisting[caption=Green.h]{Assignment3_1StateBehaviour/src/Green.h}
+\lstinputlisting[caption=Yellow.h]{Assignment3_1StateBehaviour/src/Yellow.h}
 
-\lstinputlisting[caption=main.cpp]{EmbeddedSystemsAssignment2_1/src/main.cpp}
 
 
 % TODO: put these in columns next to each other?
