@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 
 int command = 0; // for incoming serial data
