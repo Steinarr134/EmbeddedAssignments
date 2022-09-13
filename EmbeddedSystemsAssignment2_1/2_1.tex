@@ -72,29 +72,30 @@
 I created timer\_msec.h and timer\_msec.cpp as can be seen in appendix \ref{appendix:code}.
 \newline
 
-The init() method sets the timer up to fire every second.
+The \texttt{init()} method sets the timer up to fire every second.
 Running the main.cpp program given in the assignment results in the LED blinking at a frequency of 0.5Hz as expected. 
 \newline
 
-The init(int period\_ms) method sets the timer up to fire every period\_ms milliseconds. 
+The \texttt{init(int period\_ms)} method sets the timer up to fire every period\_ms milliseconds. 
 The maximum length of interval the timer supports is \(\lfloor 2^{16}*1024 / 16000\rfloor = 4194\) milliseconds.
 
 \section*{Part 2}
-I modified the example to include a duty cycle option. The code can be seen in Appendix \ref{appendix:code}.
+I modified the example to include a \texttt{duty\_cycle} option. The code can be seen in Appendix \ref{appendix:code}.
 \newline
-with the duty cycle set to 20\% I reduced  the timer period until I stopped noticing the light blinking. I found it to be around 26 or 27 milliseonds. 28 ms was visibly flickering and 25 ms looked very solid.
-\newpage
+with the duty cycle set to 20\% I reduced  the timer period until I stopped noticing the light blinking. I found it to be around 26 or 27 ms. 28 ms was visibly flickering and 25 ms looked solid.
+
 \section*{Part 3}
-I added a method to the timer class called set that changes the duty cycle.
-I the used the while loop present in the main function do vary the duty cycle. Running the program I observed the LED fading from very dim to very bright over the course of 5 seconds before abruptly turning off and repeating the fade in. 
-\newpage
-and this program accomplishes the task as outlined.
+I added a method to the timer class called \texttt{set} that changes the duty cycle.
+I the used the while loop present in the \texttt{main} function to vary the duty cycle. Running the program I observed the LED fading from very dim to very bright over the course of 5 seconds before abruptly turning off and repeating the fade in. 
 
 \appendix
 \section{Code}\label{appendix:code}
-\lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
 
 \lstinputlisting[caption=timer\_msec.h]{EmbeddedSystemsAssignment2_1/src/timer_msec.h}
+
+\lstinputlisting[caption=timer\_msec.cpp]{EmbeddedSystemsAssignment2_1/src/timer_msec.cpp}
+
+\lstinputlisting[caption=main.cpp]{EmbeddedSystemsAssignment2_1/src/main.cpp}
 
 
 % TODO: put these in columns next to each other?
