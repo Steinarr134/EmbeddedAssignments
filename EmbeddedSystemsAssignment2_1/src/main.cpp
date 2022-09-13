@@ -14,10 +14,10 @@ int main()
 
   // part 1:
   // timer.init();
-  // timer.init(500);
+  timer.init(500);
 
   // part 2:
-  timer.init(20, 0.20);
+  // timer.init(20, 0.20);
 
   sei(); // enable interrupts
 
@@ -47,10 +47,10 @@ ISR(TIMER1_COMPA_vect)
   // action on compare match A
 
   // for part 1 use:
-  // led.toggle();
+  led.toggle();
 
   // for part 2 and 3 it should be
-  led.set_hi();
+  // led.set_hi();
 }
 
 ISR(TIMER1_COMPB_vect)
