@@ -90,13 +90,34 @@ A new project was created in PlatformIO and a finite state diagram using plantUM
 Which generated the following diagram:
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/FiniteStateMachine.png}
+    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm1.png}
     \caption{Finite State Machine Diagram of a simplified traffic light.}
     \label{fig:fsmdiagram}
 \end{figure}
 
 \section*{Part 2}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm1.png}
+    \caption{Updated Finite State Machine Diagram of a simplified traffic light.}
+    \label{fig:fsmdiagram}
+\end{figure}
+
+\begin{lstlisting}
+Part 2, State Machine, based on Refactoring Guru's example
+RedLight->ON
+I received: 103
+I received a go command
+RedLight->OFF
+GreenLight->ON
+I received: 115
+I received a stop command
+GreenLight->OFF
+YellowLight->ON
+YellowLight->OFF
+RedLight->ON
+\end{lstlisting}
 
 \appendix
 \section{Code}\label{appendix:code}
