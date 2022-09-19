@@ -18,7 +18,7 @@ private:
     int buffer[FIFO_SIZE];
     int* head;
     int* tail;
-    int* incr_p(int* p);
+    int* incr_p(int* p); // for incrementing the pointers
     bool it_is_empty;
     // add variables pointing to the front and back of the buffer
 };

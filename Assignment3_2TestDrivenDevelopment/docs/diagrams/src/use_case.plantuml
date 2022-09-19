@@ -1,0 +1,24 @@
+@startuml "Use case of FIFO Queue"
+left to right direction
+actor "Producer" as producer
+actor "Consumer" as consumer
+
+rectangle fifo {
+  usecase "put" as put
+  usecase "get" as get
+  usecase "reset" as reset
+  usecase "is_empty" as is_empty
+  usecase "is_full" as is_full
+
+}
+
+producer --> put
+consumer --> get
+producer --> reset
+producer --> is_full
+consumer --> is_empty
+consumer --> reset
+
+@enduml
+
+

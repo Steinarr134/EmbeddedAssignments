@@ -6,8 +6,10 @@ Fifo::Fifo()
 }
 
 int* Fifo::incr_p(int* p){
+    // this function increments the pointers in the ring buffer
     if (p + 1 == &buffer[0] + FIFO_SIZE)
-        return &buffer[0];
+    // if we're about to exit the buffer
+        return &buffer[0]; // return to 0
     else
         return p+1;
 }
@@ -34,7 +36,7 @@ void Fifo::put(int item)
     }
     *tail = item;
     tail = incr_p(tail);
-    it_is_empty = false;
+    it_is_empty = false; // no longer empty
 }
 
 bool Fifo::is_empty()

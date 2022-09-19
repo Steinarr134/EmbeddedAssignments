@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "fifo2.h"
+#include "fifo3.h"
 #include "digital_out.h"
 // State Behaviour based on the C++ example at Refactoring Guru
 
@@ -25,22 +25,21 @@ void setup()
       // read the incoming byte:
       incoming = Serial.read();
 
-      // say what you got:
-      // Serial.print("I received: ");
-      // Serial.println(incoming, DEC);
-      // you can compare the value received to a character constant, like 'g'.
+      // put into queue
       f.put(incoming);
+      // if queue is full -> turn on led
       if (f.is_full()){
         led.set_hi();
       }
     }
+    // print one item from queue every second
     if (millis() - last_time > 1000){
       last_time = millis();
       if (!f.is_empty())
       {
         Serial.println((char)f.get());
       }
-      led.set_lo();
+      led.set_lo(); // set led low queue isn't full anymore
     }
 
   }

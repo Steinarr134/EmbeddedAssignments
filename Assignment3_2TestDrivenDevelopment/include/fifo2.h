@@ -17,7 +17,6 @@ public:
 private:
     int buffer[FIFO_SIZE];
     int count;
-    // add variables pointing to the front and back of the buffer
 };
 
 #endif // FIFO_H
