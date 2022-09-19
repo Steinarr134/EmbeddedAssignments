@@ -14,7 +14,7 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{xcolor}
 \usepackage{listings}
-
+\usepackage{multicol}
 \colorlet{mygray}{black!30}
 \colorlet{mygreen}{green!60!blue}
 \colorlet{mymauve}{red!60!blue}
@@ -53,7 +53,7 @@
   }%
 }{}
 
-\title{Assignment 2.1}
+\title{Embedded Systems Programming \\ Assignment 3.2 \\ \large Test Driven Development}
 \author{Steinarr Hrafn Höskuldsson}
 
 \usepackage{fancyhdr}
@@ -78,66 +78,35 @@
     \label{fig:Switch_test}
 \end{figure}
 
-\lstinputlisting[caption=Defining 'ColorMatch' state, label={lst:colormatch}, language=Python, firstline=44, lastline=52]{LAB3/Basic.py}
+\lstinputlisting[caption=main.cpp in Part 3]{Assignment3_1StateBehaviour/src/main_prt3.cpp}
 
 }
 
 \section*{Part 1}
+\begin{multicols}{2}
+[
 A new project was created in PlatformIO and a use case diagram using plantUML was written. 
+]
+\lstinputlisting[caption=usecase.plantuml]{Assignment3_2TestDrivenDevelopment/docs/diagrams/src/use_case.plantuml}
 
-\lstinputlisting[caption=state.wsd]{Assignment3_2TestDrivenDevelopment/docs/diagrams/src/use_case.plantuml}
-
-Which generated the following diagram:
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm2.png}
-    \caption{Finite State Machine Diagram of a simplified traffic light.}
-\end{figure}
+    \includegraphics[width=0.5\textwidth]{Assignment3_2TestDrivenDevelopment/docs/diagrams/uscase.png}
+    \caption{Use Case Diagram of a First-in-First-out Queue}
+\end{multicols}
+\\
+The test cases were created from the template given in the assignment. The implemented test cases can be seen in Appendix \ref{appendix:test_main.cpp}
 
 \section*{Part 2}
-The state machine was implemented using a switch case setup. The code can be seen in appendix \ref{appendix:code}.
-\mycomment{
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Assignment3_1StateBehaviour/docs/diagrams/fsm2.png}
-    \caption{Updated Finite State Machine Diagram of a simplified traffic light.}
-\end{figure}
-}
-Running the code resulted in the following behaviour, note that lines encased in \{\} are comments added afterwards.
+The given templates were copied into the correct positions. \verb!fifo.h! was renamed to \verb!fifo2.h! so it and \verb!fifo2.cpp! could be distinguished from \verb"fifo3.h" and \verb"fifo3.cpp". That way the solutions to Part 2 and Part 3 could be programmed without interfering with each other.
 
-\lstset{language=}
-\begin{lstlisting}
-Part 2, State Machine, based on Refactoring Gurus example
-RedLight->ON
+A First-In-First-Out Queue was implemented by using a vector called \verb"buffer" and when an item is 'gotten' the \verb"Fifo" class pops the first item and then moves all the items one step forward. The class keeps count of how many items are in the queue with a private variable called \verb"count" and therefore knows where to put items that get 'put' to it.
 
-{sending: g}
 
-I received: 103
-I received a go command
-RedLight->OFF
-GreenLight->ON
+\lstinputlisting[caption=fifo2.cpp - Implementation of a Fifo class using a vector buffer.]{Assignment3_2TestDrivenDevelopment/src/fifo2.cpp}
 
-{sending s}
-
-I received: 115
-I received a stop command
-GreenLight->OFF
-YellowLight->ON
-
-{there was a delay here}
-
-YellowLight->OFF
-RedLight->ON
-\end{lstlisting}
-\lstset{language=cpp}
-
+A main program was written that accepts characters from the Serial port and puts them into the queue. Every second one character is printed from the queue and the onboard LED is turned on while the queue is full. The code for \verb!main.cpp! can be seen in Appendix \ref{appendix:main.cpp}
 
 \section*{Part 3}
-The State behaviour was implemented based on the example from Reference Guru. The Context and State Definitions were moved to Context.h and each class definition was moved into its own header file.
-Here is the program. All relevant header files can be seen in Appendix \ref{appendix:code}
-\lstinputlisting[caption=main.cpp in Part 3]{Assignment3_1StateBehaviour/src/main_prt3.cpp}
-The behaviour when run was exactly the same as an be seen in Part 2. 
-
+A second implementation of the \verb!Fifo! class was written based on a ring buffer. The class uses private attributes \verb"head" and \verb"tail" 
 \newpage
 \appendix
 \section{Code}\label{appendix:code}
