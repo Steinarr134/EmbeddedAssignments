@@ -98,7 +98,7 @@ The test cases were created from the template given in the assignment. The imple
 \section*{Part 2}
 The given templates were copied into the correct positions. \verb!fifo.h! was renamed to \verb!fifo2.h! so it and \verb!fifo2.cpp! could be distinguished from \verb"fifo3.h" and \verb"fifo3.cpp". That way the solutions to Part 2 and Part 3 could be programmed without interfering with each other.
 
-A First-In-First-Out Queue was implemented by using a vector called \verb"buffer" and when an item is 'gotten' the \verb"Fifo" class pops the first item and then moves all the items one step forward. The class keeps count of how many items are in the queue with a private variable called \verb"count" and therefore knows where to put items that get 'put' to it.
+A First-In-First-Out Queue was implemented by using a vector called \verb"buffer" and when an item is 'gotten' the \verb"Fifo" class pops the first item and then moves all the items one step forward. The class keeps count of how many items are in the queue with a private attribute called \verb"count" and therefore knows where to put items that get 'put' to it.
 
 
 \lstinputlisting[caption=fifo2.cpp - Implementation of a Fifo class using a vector buffer.]{Assignment3_2TestDrivenDevelopment/src/fifo2.cpp}
@@ -106,7 +106,10 @@ A First-In-First-Out Queue was implemented by using a vector called \verb"buffer
 A main program was written that accepts characters from the Serial port and puts them into the queue. Every second one character is printed from the queue and the onboard LED is turned on while the queue is full. The code for \verb!main.cpp! can be seen in Appendix \ref{appendix:main.cpp}
 
 \section*{Part 3}
-A second implementation of the \verb!Fifo! class was written based on a ring buffer. The class uses private attributes \verb"head" and \verb"tail" 
+A second implementation of the \verb!Fifo! class was written based on a ring buffer. The class uses private attributes \verb"head" and \verb"tail" that are pointers to where in the ring buffer the next item to be 'gotten' is and where the next item to be 'put' should go, respectively.
+
+
+\lstinputlisting[caption=fifo2.cpp - Implementation of a Fifo class using a ring buffer and pointers.]{Assignment3_2TestDrivenDevelopment/src/fifo3.cpp}
 \newpage
 \appendix
 \section{Code}\label{appendix:code}
