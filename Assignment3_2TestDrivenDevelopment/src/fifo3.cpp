@@ -30,8 +30,8 @@ void Fifo::put(int item)
 {  
     if (is_full())
     {
-        get();// throw one out to make room
-        this->put(item); //recursive for the win!
+        get();  // throw one out to make room
+        put(item); //recursive for the win!
         return;
     }
     *tail = item;
