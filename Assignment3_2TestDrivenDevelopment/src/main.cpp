@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "fifo3.h"
+#include "fifo3.h" // change to fifo2.h for part 2
 #include "digital_out.h"
 // State Behaviour based on the C++ example at Refactoring Guru
 
@@ -8,12 +8,11 @@ void loop() {}
 
 void setup()
 {
-  // put your setup code here, to run once:
-  Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
+  Serial.begin(115200); // open serial port
   Fifo f;
   Digital_out led(5);
   delay(100);
-  Serial.println("Assignment 3_1 - FIFO");
+  Serial.println("Assignment 3_2 - FIFO");
   char incoming;
   long last_time = 0;
 
@@ -39,7 +38,7 @@ void setup()
       {
         Serial.println((char)f.get());
       }
-      led.set_lo(); // set led low queue isn't full anymore
+      led.set_lo(); // set led low, queue isn't full anymore
     }
 
   }
