@@ -94,14 +94,16 @@ A new project was created in PlatformIO and a use case diagram using plantUML wa
 \end{multicols}
 \\
 The test cases were created from the template given in the assignment. The implemented test cases can be seen in Appendix \ref{appendix:test_main.cpp}
-
+\\
+The code was uploaded to github and can be found here: \url{https://github.com/Steinarr134/EmbeddedAssignments/tree/master/Assignment3_2TestDrivenDevelopment}
+\newpage
 \section*{Part 2}
 The given templates were copied into the correct positions. \verb!fifo.h! was renamed to \verb!fifo2.h! so it and \verb!fifo2.cpp! could be distinguished from \verb"fifo3.h" and \verb"fifo3.cpp". That way the solutions to Part 2 and Part 3 could be programmed without interfering with each other.
 
 A First-In-First-Out Queue was implemented by using a vector called \verb"buffer" and when an item is 'gotten' the \verb"Fifo" class pops the first item and then moves all the items one step forward. The class keeps count of how many items are in the queue with a private attribute called \verb"count" and therefore knows where to put items that get 'put' to it.
 
 
-\lstinputlisting[caption=fifo2.cpp - Implementation of a Fifo class using a vector buffer.]{Assignment3_2TestDrivenDevelopment/src/fifo2.cpp}
+\lstinputlisting[caption=src/fifo2.cpp - Implementation of a Fifo class using a vector buffer.]{Assignment3_2TestDrivenDevelopment/src/fifo2.cpp}
 
 A main program was written that accepts characters from the Serial port and puts them into the queue. Every second one character is printed from the queue and the onboard LED is turned on while the queue is full. The code for \verb!main.cpp! can be seen in Appendix \ref{appendix:main.cpp}
 
@@ -109,17 +111,17 @@ A main program was written that accepts characters from the Serial port and puts
 A second implementation of the \verb!Fifo! class was written based on a ring buffer. The class uses private attributes \verb"head" and \verb"tail" that are pointers to where in the ring buffer the next item to be 'gotten' is and where the next item to be 'put' should go, respectively.
 
 
-\lstinputlisting[caption=fifo2.cpp - Implementation of a Fifo class using a ring buffer and pointers.]{Assignment3_2TestDrivenDevelopment/src/fifo3.cpp}
+\lstinputlisting[caption=src/fifo3.cpp - Implementation of a Fifo class using a ring buffer and pointers.]{Assignment3_2TestDrivenDevelopment/src/fifo3.cpp}
 \newpage
 \section*{Appendix}
 \appendix
 \section{Test cases}\label{appendix:test_main.cpp}
-\lstinputlisting[caption=Context.h]{Assignment3_2TestDrivenDevelopment/test/test_main.cpp}
+\lstinputlisting[caption=test/test\_main.cpp]{Assignment3_2TestDrivenDevelopment/test/test_main.cpp}
 \section{main.cpp}\label{appendix:main.cpp}
-\lstinputlisting[caption=Context.h]{Assignment3_2TestDrivenDevelopment/src/main.cpp}
+\lstinputlisting[caption=src\_main.cpp]{Assignment3_2TestDrivenDevelopment/src/main.cpp}
 \section{Header files}\label{appendix:headers}
-\lstinputlisting[caption=Context.h]{Assignment3_2TestDrivenDevelopment/include/fifo2.h}
-\lstinputlisting[caption=Context.h]{Assignment3_2TestDrivenDevelopment/include/fifo3.h}
+\lstinputlisting[caption=include/fifo2.h]{Assignment3_2TestDrivenDevelopment/include/fifo2.h}
+\lstinputlisting[caption=include/fifo3.h]{Assignment3_2TestDrivenDevelopment/include/fifo3.h}
 %\lstinputlisting[caption=main.cpp in Part 2]{Assignment3_1StateBehaviour/src/main_prt2.cpp_old}
 
 
