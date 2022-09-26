@@ -1,22 +1,19 @@
 BUILD=build
-
 # This is the default target, which will be built when 
 # you invoke make
 .PHONY: all
-all: main
+all: main_count
 # This rule tells make how to build the file hello from hello.cpp
+
 hello: src/hello.cpp
 	g++ -o hello src/hello.cpp
 
-$(BUILD)/increment.o: include/increment.h
-	g++ -pthread -o $@ -c $<
+# build source files into objects files
+$(BUILD)/%.o : src/%.cpp
+	g++ -pthread -o $@ -c $< -I include
 
-$(BUILD)/decrement.o: include/decrement.h
-	g++ -pthread -o $@ -c $<
-
-
-main: src/main.cpp $(BUILD)/decrement.o $(BUILD)/increment.o
-	g++ -o $@ $^
+main_count: $(BUILD)/main_count.o $(BUILD)/decrement.o $(BUILD)/increment.o
+	g++ -pthread -o $@ $^
 #	g++ -pthread -o main src/main.cpp -I include
 
 # This rule tells make to copy hello to the binaries subdirectory,

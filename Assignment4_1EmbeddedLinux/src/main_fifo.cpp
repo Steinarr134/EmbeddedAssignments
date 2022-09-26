@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+#include "fifo3.h"
 
 pthread_mutex_t sharedVariableMutex;
-int32_t gSharedVariable = 0;
-#include "increment.h"
-#include "decrement.h"
+Fifo fifo;
+#include "increment_fifo.h"
+#include "decrement_fifo.h"
 
 pthread_t incrementTaskObj;
 pthread_t decrementTaskObj;
