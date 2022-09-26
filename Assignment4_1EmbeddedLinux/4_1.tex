@@ -1,0 +1,155 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{multicol}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+
+
+
+\lstdefinelanguage{makefile}{
+otherkeywords={.SUFFIXES},
+morekeywords={SUFFIX, CPP_,},
+moredelim=[is][\color{mbleu}]{/*}{*/},
+style=global,%
+morecomment=[l][commentstyle]{\#},%
+emphstyle={\color{vimvert}},%
+moredelim=[s][\color{vimvert}]{\$(}{)}%
+}
+
+\lstdefinelanguage{cpp}{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                                     
+  title=\lstname 
+}
+\lstset{language=cpp}
+\lstnewenvironment{code}[2][]{%
+  \lstset{%
+    numbers = left,
+    title   = #2,
+    #1,
+  }%
+}{}
+
+\title{Embedded Systems Programming \\ Assignment 4.1 \\ \large Embedded Linux}
+\author{Steinarr Hrafn Höskuldsson}
+
+\usepackage{fancyhdr}
+\fancypagestyle{firststyle}
+{
+   \fancyhf{}
+   \fancyhead[L]{Embedded Systems Programming}
+   
+   \renewcommand{\headrulewidth}{0pt} % removes horizontal header line
+}
+
+\newcommand{\mycomment}[1]{}
+\begin{document}
+\pagestyle{firststyle}
+{\let\newpage\relax\maketitle}
+
+\mycomment{
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{LAB3/Basic1.png}
+    \caption{"Switch test" Breadboard set up}
+    \label{fig:Switch_test}
+\end{figure}
+
+\lstinputlisting[caption=main.cpp in Part 3]{Assignment3_1StateBehaviour/src/main_prt3.cpp}
+
+}
+
+\section*{Part 1}
+
+Using Rpi-Imager, a SD card was formatted and the Raspberry Pi was then booted. A terminal window was used to confirm that one could ssh onto it. SSH FS extension for VSCode was installed and after configuring SSH FS, the SSH client could connect to the Raspberry Pi. A workspace was created and a simple program was written that prints "Hello" to stdout.
+
+\begin{lstlisting}[caption={src/hello.cpp, writes "Hello" to stdout}]
+#include <stdio.h>
+
+int main()
+{
+    printf("Hello\n");
+    return 0;
+}
+\end{lstlisting}
+
+It compiled and ran as expected. Next a makefile was created:
+
+\begin{lstlisting}[language=makefile, caption={Makefile for simple hello program}]
+# This is the default target, which will be built when 
+# you invoke make
+.PHONY: all
+all: hello
+# This rule tells make how to build the file hello from hello.cpp
+hello: src/hello.cpp
+	g++ -o hello src/hello.cpp
+# This rule tells make to copy hello to the binaries subdirectory,
+# creating it if necessary
+.PHONY: install
+install:
+	mkdir -p bin
+	cp -p hello bin
+# This rule tells make to delete hello 
+.PHONY: clean 
+clean:
+	rm -f hello
+
+\end{lstlisting}
+\section*{Part 2}
+
+
+
+\section*{Part 3}
+\section*{Appendix}
+\appendix
+\section{Test cases}\label{appendix:test_main.cpp}
+\lstinputlisting[caption=test/test\_main.cpp]{Assignment3_2TestDrivenDevelopment/test/test_main.cpp}
+\section{main.cpp}\label{appendix:main.cpp}
+\lstinputlisting[caption=src\_main.cpp]{Assignment3_2TestDrivenDevelopment/src/main.cpp}
+\section{Header files}\label{appendix:headers}
+\lstinputlisting[caption=include/fifo2.h]{Assignment3_2TestDrivenDevelopment/include/fifo2.h}
+\lstinputlisting[caption=include/fifo3.h]{Assignment3_2TestDrivenDevelopment/include/fifo3.h}
+%\lstinputlisting[caption=main.cpp in Part 2]{Assignment3_1StateBehaviour/src/main_prt2.cpp_old}
+
+
+
+
+% TODO: put these in columns next to each other?
+
+\end{document}
+
