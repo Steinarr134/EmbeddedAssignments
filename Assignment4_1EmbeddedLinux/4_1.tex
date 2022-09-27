@@ -131,25 +131,62 @@ clean:
 
 \end{lstlisting}
 \section*{Part 2}
+The Mutex example was copied and split into header files in \verb!include!, implementation files in \verb!src! and \verb!src/main_count.cpp!. They can be seen in Appendix \ref{appendix:crements}. A Makefile was created and configured such that it will only compile the changed implementation files.
 
+\begin{lstlisting}[language=makefile, caption={Makefile for compiling Mutex example}]
+BUILD=build
+# This is the default target, which will be built when 
+# you invoke make
+.PHONY: all
+all: main_count
+# This rule tells make how to build the file hello from hello.cpp
 
+hello: src/hello.cpp
+	g++ -o hello src/hello.cpp
+
+# build source files into objects files
+$(BUILD)/%.o : src/%.cpp
+	g++ -pthread -o $@ -c $< -I include
+	
+main_count: $(BUILD)/main_count.o $(BUILD)/decrement.o $(BUILD)/increment.o
+	g++ -pthread -o $@ $^
+#	g++ -pthread -o main src/main.cpp -I include
+
+# This rule tells make to copy hello to the binaries subdirectory,
+# creating it if necessary
+.PHONY: install
+install:
+	mkdir -p bin
+	cp -p hello bin
+# This rule tells make to delete hello 
+.PHONY: clean 
+clean:
+	rm -f hello
+	rm -f $(BUILD)/*.o
+	rm -f main
+
+\end{lstlisting}
 
 \section*{Part 3}
+The \verb!increment! and \verb!decrement! implementations were copied to \verb!increment_fifo! and \verb!decrement_fifo! and modified so that increment adds an integer to the queue and \verb!decrement! gets an integer, the implementations can be seen in Appendix \ref{appendix:fifoments}. The \verb!Fifo! implementation was modified so that the inner workings of it were protected with the MutEx.
+%\lstinputlisting[caption=Thread safe implementation of a First-in-First-out Queue. ]{Assignment4_1EmbeddedLinux/src/fifo3.cpp}
+\verb!main_fifo.cpp! was written to start the \verb!increment! and \verb!decrement! threads. 
+
+%\lstinputlisting[caption=src/main\_fifo.cpp]{Assignment4_1EmbeddedLinux/src/main_fifo.cpp}
+
 \section*{Appendix}
 \appendix
-\section{Test cases}\label{appendix:test_main.cpp}
-\lstinputlisting[caption=test/test\_main.cpp]{Assignment3_2TestDrivenDevelopment/test/test_main.cpp}
-\section{main.cpp}\label{appendix:main.cpp}
-\lstinputlisting[caption=src\_main.cpp]{Assignment3_2TestDrivenDevelopment/src/main.cpp}
-\section{Header files}\label{appendix:headers}
-\lstinputlisting[caption=include/fifo2.h]{Assignment3_2TestDrivenDevelopment/include/fifo2.h}
-\lstinputlisting[caption=include/fifo3.h]{Assignment3_2TestDrivenDevelopment/include/fifo3.h}
-%\lstinputlisting[caption=main.cpp in Part 2]{Assignment3_1StateBehaviour/src/main_prt2.cpp_old}
-
-
-
-
-% TODO: put these in columns next to each other?
+\section{Mutex example, split into header and implementation files}\label{appendix:crements}
+\lstinputlisting[caption=include/increment.h]{Assignment4_1EmbeddedLinux/include/increment.h}
+\lstinputlisting[caption=include/decrement.h]{Assignment4_1EmbeddedLinux/include/decrement.h}
+\lstinputlisting[caption=src/increment.cpp]{Assignment4_1EmbeddedLinux/src/increment.cpp}
+\lstinputlisting[caption=src/decrement.cpp]{Assignment4_1EmbeddedLinux/src/decrement.cpp}
+\lstinputlisting[caption=src/main\_count.cpp]{Assignment4_1EmbeddedLinux/src/main_count.cpp}
+\section{Mutex Fifo Implementation}\label{appendix:fifoments}
+%\lstinputlisting[caption=include/increment\_fifo.h]{Assignment4_1EmbeddedLinux/include/increment_fifo.h}
+%\lstinputlisting[caption=include/decrement\_fifo.h]{Assignment4_1EmbeddedLinux/include/decrement_fifo.h}
+%\lstinputlisting[caption=src/increment\_fifo.cpp]{Assignment4_1EmbeddedLinux/src/increment_fifo.cpp}
+%\lstinputlisting[caption=src/decrement\_fifo.cpp]{Assignment4_1EmbeddedLinux/src/decrement_fifo.cpp}
 
 \end{document}
 
