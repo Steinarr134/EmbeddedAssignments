@@ -4,3 +4,7 @@
 
 extern pthread_mutex_t sharedVariableMutex;
 extern Fifo fifo;
+
+
+
+void *incrementTask(void *param);

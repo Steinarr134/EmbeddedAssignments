@@ -3,11 +3,11 @@
 #include <unistd.h>
 #include <stdint.h>
 #include "fifo3.h"
+#include "increment_fifo.h"
+#include "decrement_fifo.h"
 
 pthread_mutex_t sharedVariableMutex;
 Fifo fifo;
-#include "increment_fifo.h"
-#include "decrement_fifo.h"
 
 pthread_t incrementTaskObj;
 pthread_t decrementTaskObj;
