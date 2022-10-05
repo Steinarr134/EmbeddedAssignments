@@ -112,66 +112,16 @@ parm:           name:The name to display in /var/log/kern.log (charp)
 \end{lstlisting}
 
 The kernel module was loaded and unloaded while the kernel output log was being monitored. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Assignment4_2LinuxKernelModule/part1_kernel_loading.png}
+    \caption{Screenshot of the terminals used to test the loading and unloading of the hello kernel module.}
+    \label{fig:kernel_loading}
+\end{figure}
 
-It compiled and ran as expected. Next a makefile was created:
-
-\begin{lstlisting}[language=makefile, caption={Makefile for simple hello program}]
-# This is the default target, which will be built when 
-# you invoke make
-.PHONY: all
-all: hello
-# This rule tells make how to build the file hello from hello.cpp
-hello: src/hello.cpp
-	g++ -o hello src/hello.cpp
-# This rule tells make to copy hello to the binaries subdirectory,
-# creating it if necessary
-.PHONY: install
-install:
-	mkdir -p bin
-	cp -p hello bin
-# This rule tells make to delete hello 
-.PHONY: clean 
-clean:
-	rm -f hello
-
-\end{lstlisting}
 \newpage
 \section*{Part 2}
-The Mutex example was copied and split into header files in \verb!include!, implementation files in \verb!src! and \verb!src/main_count.cpp!. They can be seen in Appendix \ref{appendix:crements}. A Makefile was created and configured such that it will only compile the changed implementation files.
 
-\begin{lstlisting}[language=makefile, caption={Makefile for compiling Mutex example}]
-BUILD=build
-# This is the default target, which will be built when 
-# you invoke make
-.PHONY: all
-all: main_count
-# This rule tells make how to build the file hello from hello.cpp
-
-hello: src/hello.cpp
-	g++ -o hello src/hello.cpp
-
-# build source files into objects files
-$(BUILD)/%.o : src/%.cpp
-	g++ -pthread -o $@ -c $< -I include
-	
-main_count: $(BUILD)/main_count.o $(BUILD)/decrement.o $(BUILD)/increment.o
-	g++ -pthread -o $@ $^
-#	g++ -pthread -o main src/main.cpp -I include
-
-# This rule tells make to copy hello to the binaries subdirectory,
-# creating it if necessary
-.PHONY: install
-install:
-	mkdir -p bin
-	cp -p hello bin
-# This rule tells make to delete hello 
-.PHONY: clean 
-clean:
-	rm -f hello
-	rm -f $(BUILD)/*.o
-	rm -f main
-
-\end{lstlisting}
 
 \section*{Part 3}
 The \verb!increment! and \verb!decrement! implementations were copied to \verb!increment_fifo! and \verb!decrement_fifo! and modified so that increment adds an integer to the queue and \verb!decrement! gets an integer, the implementations can be seen in Appendix \ref{appendix:fifoments}. The \verb!Fifo! implementation was modified so that the inner workings of it were protected with the MutEx.
