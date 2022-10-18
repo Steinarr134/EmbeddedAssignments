@@ -1,0 +1,176 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{multicol}
+\colorlet{mygray}{black!30}
+\colorlet{mygreen}{green!60!blue}
+\colorlet{mymauve}{red!60!blue}
+
+
+
+\lstdefinelanguage{makefile}{
+otherkeywords={.SUFFIXES},
+morekeywords={SUFFIX, CPP_,},
+moredelim=[is][\color{mbleu}]{/*}{*/},
+style=global,%
+morecomment=[l][commentstyle]{\#},%
+emphstyle={\color{vimvert}},%
+moredelim=[s][\color{vimvert}]{\$(}{)}%
+}
+
+\lstdefinelanguage{cpp}{
+  backgroundcolor=\color{gray!10},  
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breakatwhitespace=false,      
+  breaklines=true,                
+  captionpos=b,                    
+  commentstyle=\color{mygreen}, 
+  extendedchars=true,              
+  frame=single,                   
+  keepspaces=true,             
+  keywordstyle=\color{blue},      
+  language=c++,                 
+  numbers=none,                
+  numbersep=5pt,                   
+  numberstyle=\tiny\color{blue}, 
+  rulecolor=\color{mygray},        
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,                 
+  stepnumber=5,                  
+  stringstyle=\color{mymauve},    
+  tabsize=3,                                     
+  title=\lstname 
+}
+\lstset{language=cpp}
+\lstnewenvironment{code}[2][]{%
+  \lstset{%
+    numbers = left,
+    title   = #2,
+    #1,
+  }%
+}{}
+
+\title{Embedded Systems Programming \\ Assignment 4.2 \\ \large Linux Kernel Module}
+\author{Steinarr Hrafn Höskuldsson}
+
+\usepackage{fancyhdr}
+\fancypagestyle{firststyle}
+{
+   \fancyhf{}
+   \fancyhead[L]{Embedded Systems Programming}
+   
+   \renewcommand{\headrulewidth}{0pt} % removes horizontal header line
+}
+
+\newcommand{\mycomment}[1]{}
+\begin{document}
+\pagestyle{firststyle}
+{\let\newpage\relax\maketitle}
+
+\mycomment{
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{LAB3/Basic1.png}
+    \caption{"Switch test" Breadboard set up}
+    \label{fig:Switch_test}
+\end{figure}
+
+\lstinputlisting[caption=main.cpp in Part 3]{Assignment3_1StateBehaviour/src/main_prt3.cpp}
+
+}
+
+
+\section*{Part 1}
+The primary UART was configured using the \verb!raspi-config! interface. 
+\\
+The symbol rate was found via the \verb!stty! command to be 0.
+\\
+After running minicom and lowering the baud rate to 1200.  The \verb!stty! command reports the baud rate on \verb"/dev/ttyS0" to be 1200.
+\\
+The difference between 1200 and 115200 baud is not noticeable when typing but obvious when pasting a long sentence into minicom.
+\\
+Another way to detect the difference is by turning on local echo and typing at different speeds:
+\begin{verbatim}
+    
+    ttyyppiinngg  sslloowwllyy
+    
+    ttyyppiningg  ffaastst..
+\end{verbatim}
+
+\\
+After closing minicom the speed according to the \verb"stty" command goes back to 0.
+
+
+\section*{Part 2}
+
+Running the example given, the output was:
+\begin{verbatim}
+The following was read in [20]: Hello Raspberry Pi!
+\end{verbatim}
+Adding a newline character to the end of the string results in almost the same output only a second empty line is also printed. This is because in the \verb!printf! statement there is a newline character and the string received now also contains a newline character resulting in two consecutive newline characters.
+
+The example was edited to read a line from stdin and send it to the serial port. For anything to be sent a newline has to be sent to stdin.
+
+\\
+After exiting the program the baud rate stays at 57600 according to the \verb"stty" command. Unlike when using \verb"minicom". The program does nothing to reset the settings on \verb"/dev/ttyS0".
+
+
+
+\section*{Part 3}
+Two c programs were written. \verb!part3_write! increments a counter once every second and writes its value to the serial port in binary format. \verb!part3_read! uses a blocking read to read a \verb!uint32_t! and prints it.
+
+It took a bit of trial and error to get the read to always wait for 4 bytes. Before that was successfull the output looked like :
+\begin{verbatim}
+1
+0
+0
+2
+0
+0
+0
+3
+0
+0
+0
+...
+\end{verbatim}
+ 
+ However after getting the port settings right the read call blocked until 4 bytes were read and then the output was as expected:
+ \begin{verbatim}
+1
+2
+3
+...
+.
+...
+255
+256
+257
+...
+ \end{verbatim}
+
+\section*{Appendix}
+\appendix
+\subsection*{Part 2}\label{appendix:part2}
+%\lstinputlisting[caption=include/increment.h]{Assignment4_1EmbeddedLinux/include/increment.h}
+\subsection*{Part 3}\label{appendix:part3}
+%\lstinputlisting[caption=include/decrement.h]{Assignment4_1EmbeddedLinux/include/decrement.h}
+%\lstinputlisting[caption=src/increment.cpp]{Assignment4_1EmbeddedLinux/src/increment.cpp}
+
+\end{document}
+

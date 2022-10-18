@@ -65,7 +65,7 @@ moredelim=[s][\color{vimvert}]{\$(}{)}%
   }%
 }{}
 
-\title{Embedded Systems Programming \\ Assignment 4.1 \\ \large Embedded Linux}
+\title{Embedded Systems Programming \\ Assignment 4.2 \\ \large Linux Kernel Module}
 \author{Steinarr Hrafn Höskuldsson}
 
 \usepackage{fancyhdr}
@@ -131,9 +131,11 @@ The \verb"mydev.c"example given in the assignment was used, it already has the s
 \end{figure}
 
 \section*{Part 3}
-A simple application was written that writes an increasing number of characters to \verb!/dev/mydev1!. The program can be seen in Listing \ref{usemydev}
+A simple application was written that writes an increasing number of characters to \verb!/dev/mydev1!.
 
-\lstinputlisting[caption={A simple program that writes to the Device Node}]{}\label{usemydev}
+\lstinputlisting[caption={A simple program that writes to the Device Node}]{Assignment4_2LinuxKernelModule/use_mydev.c}
+
+Running the program while monitoring the Kernel Log resulted in the following being observed in the Kernel Log:
 
 \begin{verbatim}[caption={Output of the Kernel Log when use_mydev is run.}]
 Oct  6 23:26:25 raspberrypi kernel: [ 2548.997027] mydev:
