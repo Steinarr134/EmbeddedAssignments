@@ -65,7 +65,7 @@ moredelim=[s][\color{vimvert}]{\$(}{)}%
   }%
 }{}
 
-\title{Embedded Systems Programming \\ Assignment 5.1 \\ \large RPi UART Communications}
+\title{Embedded Systems Programming \\ Assignment 5.2 \\ \large Communication between Raspberyr Pi and Arduino}
 \author{Steinarr Hrafn Höskuldsson}
 
 \usepackage{fancyhdr}
@@ -96,84 +96,26 @@ moredelim=[s][\color{vimvert}]{\$(}{)}%
 
 
 \section*{Part 1}
-The primary UART was configured using the \verb!raspi-config! interface. 
-\\
-The symbol rate was found via the \verb!stty! command to be 0.
-\\
-After running minicom and lowering the baud rate to 1200.  The \verb!stty! command reports the baud rate on \verb"/dev/ttyS0" to be 1200.
-\\
-The difference between 1200 and 115200 baud is not noticeable when typing but obvious when pasting a long sentence into minicom.
-\\
-Another way to detect the difference is by turning on local echo and typing at different speeds:
-\begin{verbatim}
-    
-    ttyyppiinngg  sslloowwllyy
-    
-    ttyyppiningg  ffaastst..
-\end{verbatim}
-After closing minicom the speed according to the \verb"stty" command goes back to 0.
+The Arduino's tx pin was connected to the Raspberry Pi's rx pin and the Raspberry Pi's tx to the Arduino's rx pin. A logic level converter was used to convert between the 3.3V and 5V logic levels.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{LAB3/Basic1.png}
+    \caption{A picture of connections between Arduino and Raspberry Pi}
+    \label{fig:part1}
+\end{figure}
 
 \section*{Part 2}
+The supplied Arduino Sketch was uploaded to the Arduino and the supplied command.c program was saved on the Raspberry Pi, compiled with gcc and executed using for example: \verb!./command "LED 100"!. 
 
-Running the example given, the output was:
-\begin{verbatim}
-The following was read in [20]: Hello Raspberry Pi!
-\end{verbatim}
-Adding a newline character to the end of the string results in almost the same output only a second empty line is also printed. This is because in the \verb!printf! statement there is a newline character and the string received now also contains a newline character resulting in two consecutive newline characters.
+The result was that the brightness of the LED could be controlled from the terminal of the Raspberry Pi. The results, as reported by the Arduino, were also printed to the terminal.
 
-The example was edited to read a line from stdin and send it to the serial port, the program can be seen in Appendix \ref{appendix:part2}. For anything to be sent a newline has to be sent to stdin.
-
-After exiting the program the baud rate stays at 57600 according to the \verb"stty" command. Unlike when using \verb"minicom". The program does nothing to reset the settings on \verb"/dev/ttyS0".
-
-
+The Arduino sketch was then modified to comply with line reading mode by using \verb!Serial.println! instead of \verb!Serial.print! to print the buffer. This resulted in minimal change on the Raspberry Pi side, two new lines were printed in the terminal output and the length of the received string increased by two.
 
 \section*{Part 3}
-Two c programs were written, see Appendix \ref{appendix:part3}. \verb!part3_write! increments a counter once every second and writes its value to the serial port in binary format. \verb!part3_read! uses a blocking read to read a \verb!uint32_t! and prints it.
+The Arduino sketch was modified to accept a two byte binary message containing a register byte and a value byte. If the register byte was 2 then the Arduino will write the value byte out as a pwm signal on pin 11.
 
-It took a bit of trial and error to get the read to always wait for 4 bytes. Before that was successfull the output looked like :
-\begin{verbatim}
-1
-0
-0
-2
-0
-0
-0
-3
-0
-0
-0
-...
-.
-...
-255
-0
-0
-0
-0
-1
-0
-0
-1
-1
-0
-0
-...
-\end{verbatim}
- 
- However after getting the port settings right the read call blocked until 4 bytes were read and then the output was as expected:
- \begin{verbatim}
-1
-2
-3
-...
-.
-...
-255
-256
-257
-...
- \end{verbatim}
+A new c program was written for the Raspberry Pi that sets the serial port to raw mode and prints the two input arguments as binary values.
 
 \section*{Appendix}
 \appendix
