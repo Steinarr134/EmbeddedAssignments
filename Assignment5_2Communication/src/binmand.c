@@ -25,20 +25,20 @@ int main(int argc, char *argv[]){
    struct termios options;
 
    tcgetattr(file, &options);
-
+   // set as binary
    cfmakeraw(&options);
    options.c_cflag |= B115200 | CS8 | CREAD | CLOCAL;
    tcflush(file, TCIFLUSH);
    tcsetattr(file, TCSANOW, &options);
 
-   // send the string plus the null character
-    const size_t MSG_LEN = 2;
+   const size_t MSG_LEN = 2;
    uint8_t msg[MSG_LEN];
 
    // populate the message with integer values in binary format
    msg[0] = atoi(argv[1]);
    msg[1] = atoi(argv[2]);
 
+   // write to serial
    if (count = write(file, msg, 2)<0){
       perror("Failed to write to the output\n");
       return -1;
